@@ -77,7 +77,7 @@ export default class Index extends Component {
     })
   }
 
-  toggleDrawer = ()=>{
+  toggleDrawer = () => {
     const visi = this.state.showDrawer;
     this.setState({
       showDrawer: !visi
@@ -92,12 +92,12 @@ export default class Index extends Component {
           left
           mask
           onClose={this.toggleDrawer}
-          // items={['menu1','menu2']}
-          >
- <View className='drawer-item'>优先展示items里的数据</View>
-  <View className='drawer-item'>如果items没有数据就会展示children</View>
-  <View className='drawer-item'>这是自定义内容 <AtIcon value='home' size='20' /></View>
-  <View className='drawer-item'>这是自定义内容</View>
+        // items={['menu1','menu2']}
+        >
+          <View style={{height:'32px',width: '100%', border:'1px solid black',alignContent: 'center', justifyContent: 'center'}}>优先展示items里的数据</View>
+          <View className='drawer-item'>如果items没有数据就会展示children</View>
+          <View className='drawer-item'>这是自定义内容 <AtIcon value='home' size='20' /></View>
+          <View className='drawer-item'>这是自定义内容</View>
 
         </AtDrawer>
         <View className='at-row'>
