@@ -3,6 +3,7 @@ import { Provider } from '@tarojs/mobx'
 import Index from './pages/index'
 
 import counterStore from './store/counter'
+import orderStore from './store/orderInfoStore'
 
 import './app.styl'
 
@@ -15,7 +16,8 @@ import {AtTabBar} from 'taro-ui'
 // }
 
 const store = {
-  counterStore
+  counterStore,
+  orderStore
 }
 
 class App extends Component {
@@ -23,7 +25,9 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/logs/logs'
+      'pages/logs/logs',
+      'pages/notification/notification',
+      'pages/orderInfo/orderInfo'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -31,26 +35,66 @@ class App extends Component {
       navigationBarTitleText: '窜货上报管理系统',
       navigationBarTextStyle: 'black'
     }
-    // ,
-    // tabBar:{
-    //   list:[
-    //     {
-    //       text:'HomePage',
-    //       pagePath:'pages/index/index',
-    //       iconPath: './assets/basic/moon.png',
-    //       selectedIconPath: './assets/basic/store.png'
-    //     },
-    //     {
-    //       text:'Me',
-    //       pagePath:'pages/logs/logs',
-    //       iconPath: './assets/basic/moon.png',
-    //       selectedIconPath: './assets/basic/online_shopping.png'
-    //     }
-    //   ]
-    // }
+    ,
+    tabBar:{
+      list:[
+        {
+          text:'HomePage',
+          pagePath:'pages/index/index',
+          iconPath: './assets/basic/moon.png',
+          selectedIconPath: './assets/basic/store.png'
+        },
+        {
+          text:'消息',
+          pagePath:'pages/notification/notification',
+          iconPath: './assets/basic/moon.png',
+          selectedIconPath: './assets/basic/online_shopping.png'
+        },
+        {
+          text:'Me',
+          pagePath:'pages/logs/logs',
+          iconPath: './assets/basic/moon.png',
+          selectedIconPath: './assets/basic/online_shopping.png'
+        }
+      ]
+    }
   }
 
-  componentDidMount () {}
+  constructor(props){
+    super(props)
+  }
+
+  componentDidMount () {
+    // const orders = [
+    //   {
+    //     title: "2180778", id: 'x1'
+    //   },
+    //   {
+    //     title: "2186226", id: 'x2'
+    //   },
+    //   {
+    //     title: "2212745", id: 'x3'
+    //   },
+    //   {
+    //     title: "2221711", id: 'x4'
+    //   },
+    //   {
+    //     title: "2223891", id: 'x5'
+    //   }
+    // ]
+
+    // // orders.map((item,index)=>{
+      
+    // // })
+
+    // // console.log('orderStore',orderStore.getItems())
+    // for(let item in orders){
+    //   orderStore.addItem({
+    //     orderCode: item.title,
+    //     id: item.id
+    //   })
+    // }
+  }
 
   componentDidShow () {}
 

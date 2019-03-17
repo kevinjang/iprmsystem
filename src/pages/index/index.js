@@ -1,80 +1,52 @@
-// import Taro, { Component } from '@tarojs/taro'
-// import { View, Button, Text } from '@tarojs/components'
-// import { observer, inject } from '@tarojs/mobx'
-
-// import './index.styl'
-
-
-// @inject('counterStore')
-// @observer
-// class Index extends Component {
-
-//   config = {
-//     navigationBarTitleText: '首页'
-//   }
-
-//   componentWillMount () { }
-
-//   componentWillReact () {
-//     console.log('componentWillReact')
-//   }
-
-//   componentDidMount () { }
-
-//   componentWillUnmount () { }
-
-//   componentDidShow () { }
-
-//   componentDidHide () { }
-
-//   increment = () => {
-//     const { counterStore } = this.props
-//     counterStore.increment()
-//   }
-
-//   decrement = () => {
-//     const { counterStore } = this.props
-//     counterStore.decrement()
-//   }
-
-//   incrementAsync = () => {
-//     const { counterStore } = this.props
-//     counterStore.incrementAsync()
-//   }
-
-//   render () {
-//     const { counterStore: { counter } } = this.props
-//     return (
-//       <View className='index'>
-//         <Button onClick={this.increment}>+</Button>
-//         <Button onClick={this.decrement}>-</Button>
-//         <Button onClick={this.incrementAsync}>Add Async</Button>
-//         <Text>{counter}</Text>
-//       </View>
-//     )
-//   }
-// }
-
-// export default Index 
-
 import Taro, { Component } from '@tarojs/taro'
-import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer } from 'taro-ui'
+import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer, AtAccordion, AtBadge, AtList, AtListItem, AtInput } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
+import {inject, observer} from '@tarojs/mobx'
+// import { observer } from '@tarojs/mobx/dist';
 
+@inject('orderStore')
+@observer
 export default class Index extends Component {
   constructor() {
     super(...arguments)
     this.state = {
       current: 0,
-      showDrawer: false
+      showDrawer: false,
+      menus: ['待处理', '已处理', '草稿'],
+      processingAccordinItemOpen: false,
+      processingItems: [{
+        orderCode: "2180778", id: 'x1',
+        deliveryCode:'83447622'
+      },
+      {
+        orderCode: "2186226", id: 'x2',
+        deliveryCode:'83447619'
+      },
+      {
+        orderCode: "2212745", id: 'x3',
+        deliveryCode:'83448256'
+      },
+      {
+        orderCode: "2221711", id: 'x4',
+        deliveryCode:'83447117'
+      },
+      {
+        orderCode: "2223891", id: 'x5',
+        deliveryCode:'83447598'
+      }]
     }
   }
+
+  accordinIconSize = 15
+  accoedinItemOpen = false
 
   handleClick = (value) => {
     this.setState({
       current: value
     })
+
+    console.log(value)
   }
 
   toggleDrawer = () => {
@@ -84,21 +56,52 @@ export default class Index extends Component {
     })
   }
 
+  onDrawerItemClick = (index) => {
+    console.log(this.state.menus[index])
+  }
+
+  onProcessingAccordinItemClicked = () => {
+    // const {orderStore} = this.props
+    // console.log('this.props',...(this.props))
+    // this.setState({
+    //   processingItems: orderStore.getItems()
+    // })
+
+    let curr = !this.state.processingAccordinItemOpen
+    this.setState({
+      processingAccordinItemOpen: curr
+    })
+  }
+
+  componentDidMount() {
+    
+  }
+
+  // compo
+
+  loadClickedItem = (e) => {
+    const {orderStore} = this.props
+    console.log('orderStore',orderStore)
+    const orderCode = e._relatedInfo.anchorTargetText.split('：')[1]
+    orderStore.setSelectedOrderCode(orderCode)
+
+    Taro.navigateTo({
+      url: '/pages/orderInfo/orderInfo'
+    })
+    // console.log(orderCode)
+  }
+
   render() {
     return (
       <View>
-        <AtDrawer
+        {/* <AtDrawer
           show={this.state.showDrawer}
           left
           mask
           onClose={this.toggleDrawer}
-        // items={['menu1','menu2']}
+          items={this.state.menus}
+          onItemClick={this.onDrawerItemClick}
         >
-          <View style={{height:'32px',width: '100%', border:'1px solid black',alignContent: 'center', justifyContent: 'center'}}>优先展示items里的数据</View>
-          <View className='drawer-item'>如果items没有数据就会展示children</View>
-          <View className='drawer-item'>这是自定义内容 <AtIcon value='home' size='20' /></View>
-          <View className='drawer-item'>这是自定义内容</View>
-
         </AtDrawer>
         <View className='at-row'>
           <View className='at-col'>
@@ -118,8 +121,33 @@ export default class Index extends Component {
               <AtIcon className="at-icon at-icon-user"></AtIcon>
             </AtButton>
           </View>
-        </View>
-        <View className='view-content-self'>
+        </View> */}
+        <AtAccordion
+          open={this.state.processingAccordinItemOpen}
+          title="待处理" icon={{ value: 'bell', color: 'red', size: this.accordinIconSize }}
+          onClick={this.onProcessingAccordinItemClicked}>
+          <AtList hasBorder={true}>
+            {/* <AtListItem title={"第一行标题"} arrow="right" >
+
+            </AtListItem> */}
+
+            {this.state.processingItems.map((item, index) => {
+              return <View>
+                <AtListItem
+                  title={(index + 1) + '.订单号：' + item.orderCode}
+                  arrow="right"
+                  // note={item.id}
+                  extraText="详细消息"
+                  onClick={this.loadClickedItem}>
+                </AtListItem>
+                {/* <AtInput value={item.title}></AtInput> */}
+              </View>
+            })}
+          </AtList>
+        </AtAccordion>
+        <AtAccordion open={this.accoedinItemOpen} title="已处理" icon={{ value: 'check', color: 'green', size: this.accordinIconSize }}></AtAccordion>
+        <AtAccordion open={this.accoedinItemOpen} title="草稿箱" icon={{ value: 'list', color: 'darkcyan', size: this.accordinIconSize }}></AtAccordion>
+        {/* <View className='view-content-self'>
           <AtTabBar
             tabList={[
               {
@@ -139,7 +167,7 @@ export default class Index extends Component {
             style={{ inlineHeight: '64px', backgroundColor: 'steelblue' }}>
 
           </AtTabBar>
-        </View>
+        </View> */}
       </View>
     )
   }
