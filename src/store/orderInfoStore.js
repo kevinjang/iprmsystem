@@ -5,6 +5,7 @@ const orderStore = observable({
     orderInfo:[],
     addItem(item){
         const index = this.orderInfo.findIndex(v=>v.orderCode === item.orderCode);
+        console.log('addItem',item)
         if(index>-1){
             return;
         }
@@ -17,7 +18,10 @@ const orderStore = observable({
         return item;
     },
     getItems(){
-        console.log('orderInfo',this.orderInfo)
+        // console.log('orderInfo',this.orderInfo)
+        for(let item in this.orderInfo){
+            console.log('orderStore-item',item)
+        }
         return this.orderInfo
     },
     setSelectedOrderCode(orderCode){

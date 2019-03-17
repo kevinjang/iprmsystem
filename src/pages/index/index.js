@@ -10,12 +10,21 @@ import {inject, observer} from '@tarojs/mobx'
 export default class Index extends Component {
   constructor() {
     super(...arguments)
+    const {orderStore} = this.props
     this.state = {
       current: 0,
       showDrawer: false,
       menus: ['待处理', '已处理', '草稿'],
       processingAccordinItemOpen: false,
-      processingItems: [{
+      processingItems: []
+    }
+
+    this.orderStore = orderStore
+
+    // console.log('index-orderStore',orderStore)
+    
+    const orders = [
+      {
         orderCode: "2180778", id: 'x1',
         deliveryCode:'83447622'
       },
@@ -34,8 +43,22 @@ export default class Index extends Component {
       {
         orderCode: "2223891", id: 'x5',
         deliveryCode:'83447598'
-      }]
+      }
+    ]
+
+    for(let index in orders){
+      // console.log('index-orders',item)
+      const item = orders[index]
+      this.orderStore.addItem({
+        orderCode: item.orderCode,
+        deliveryCode:item.deliveryCode,
+        id: item.id
+      })
     }
+
+    this.setState({
+      processingItems: Array.from(this.orderStore.getItems())
+    })
   }
 
   accordinIconSize = 15
@@ -46,7 +69,7 @@ export default class Index extends Component {
       current: value
     })
 
-    console.log(value)
+    // console.log(value)
   }
 
   toggleDrawer = () => {
@@ -57,7 +80,7 @@ export default class Index extends Component {
   }
 
   onDrawerItemClick = (index) => {
-    console.log(this.state.menus[index])
+    // console.log(this.state.menus[index])
   }
 
   onProcessingAccordinItemClicked = () => {
@@ -80,10 +103,9 @@ export default class Index extends Component {
   // compo
 
   loadClickedItem = (e) => {
-    const {orderStore} = this.props
-    console.log('orderStore',orderStore)
+    // console.log('orderStore',orderStore)
     const orderCode = e._relatedInfo.anchorTargetText.split('：')[1]
-    orderStore.setSelectedOrderCode(orderCode)
+    this.orderStore.setSelectedOrderCode(orderCode)
 
     Taro.navigateTo({
       url: '/pages/orderInfo/orderInfo'

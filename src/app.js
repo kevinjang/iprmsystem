@@ -62,6 +62,9 @@ class App extends Component {
 
   constructor(props){
     super(props)
+    
+
+    // console.log('orderStore.getItems()',orderStore.getItems())
   }
 
   componentDidMount () {
