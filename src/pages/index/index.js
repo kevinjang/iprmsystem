@@ -21,39 +21,50 @@ export default class Index extends Component {
 
     this.orderStore = orderStore
 
-    // console.log('index-orderStore',orderStore)
+    // console.log('index-orderStore',this.orderStore)
     
     const orders = [
       {
         orderCode: "2180778", id: 'x1',
-        deliveryCode:'83447622'
+        deliveryCode:'83447622',clientName: '客户1', materialCode:'1703140616',materialName: '奔富Bin138干红葡萄酒 750ml*6',
+        carrier: '凌通物流', transportation: '汽运', 
+        receivingAddress: '绍兴柯桥金柯桥大道354号', storage: '北京华润仓', plannedBottle: '1200',
+        plannedCarton: '200.000'
       },
       {
         orderCode: "2186226", id: 'x2',
-        deliveryCode:'83447619'
+        deliveryCode:'83447619',clientName: '客户2', materialCode:'1701152516',materialName: '梦坡梦想典藏礼盒干红 750ml*1*6',
+        carrier: '凌通物流', transportation: '汽运', 
+        receivingAddress: '绍兴柯桥金柯桥大道354号', storage: '北京华润仓', plannedBottle: '1200',
+        plannedCarton: '200.000'
       },
       {
         orderCode: "2212745", id: 'x3',
-        deliveryCode:'83448256'
+        deliveryCode:'83448256',clientName: '客户3', materialCode:'1703153016',materialName: '奔富bin407干红葡萄酒（礼盒版） 750ml*6',
+        carrier: '凌通物流', transportation: '汽运',
+        receivingAddress: '大连市保税区海青仓储一号路南84-07', storage: '北京华润仓', plannedBottle: '2400',
+        plannedCarton: '400.000'
       },
       {
         orderCode: "2221711", id: 'x4',
-        deliveryCode:'83447117'
+        deliveryCode:'83447117',clientName: '客户4', materialCode:'1701152516',materialName: '梦坡梦想典藏礼盒干红 750ml*1*6',
+        carrier: '凌通物流', transportation: '汽运', 
+        receivingAddress: '东营市东营区北二路富贵园', storage: '北京华润仓', plannedBottle: '3600',
+        plannedCarton: '600.000'
       },
       {
         orderCode: "2223891", id: 'x5',
-        deliveryCode:'83447598'
+        deliveryCode:'83447598',clientName: '客户5', materialCode:'1703110516',materialName: '#麦格根黑牌红葡萄酒 750ml*6',
+        carrier: '凌通物流', transportation: '汽运',
+        receivingAddress: '湖北省武汉市江岸区黄浦大街发展大道花北小区36栋', storage: '北京华润仓', plannedBottle: '2400',
+        plannedCarton: '400.000'
       }
     ]
 
     for(let index in orders){
       // console.log('index-orders',item)
       const item = orders[index]
-      this.orderStore.addItem({
-        orderCode: item.orderCode,
-        deliveryCode:item.deliveryCode,
-        id: item.id
-      })
+      this.orderStore.addItem(item)
     }
 
     this.setState({
@@ -103,93 +114,36 @@ export default class Index extends Component {
   // compo
 
   loadClickedItem = (e) => {
-    // console.log('orderStore',orderStore)
     const orderCode = e._relatedInfo.anchorTargetText.split('：')[1]
     this.orderStore.setSelectedOrderCode(orderCode)
 
     Taro.navigateTo({
       url: '/pages/orderInfo/orderInfo'
     })
-    // console.log(orderCode)
   }
 
   render() {
     return (
       <View>
-        {/* <AtDrawer
-          show={this.state.showDrawer}
-          left
-          mask
-          onClose={this.toggleDrawer}
-          items={this.state.menus}
-          onItemClick={this.onDrawerItemClick}
-        >
-        </AtDrawer>
-        <View className='at-row'>
-          <View className='at-col'>
-            <AtButton type="secondary" style={{ marginLeft: '5px' }}
-              onClick={this.toggleDrawer}>
-              <AtIcon className="at-icon at-icon-menu"></AtIcon>
-            </AtButton>
-          </View>
-          <View className='at-col'>
-          </View>
-          <View className='at-col'>
-          </View>
-          <View className='at-col'>
-          </View>
-          <View className='at-col'>
-            <AtButton type="primary">
-              <AtIcon className="at-icon at-icon-user"></AtIcon>
-            </AtButton>
-          </View>
-        </View> */}
         <AtAccordion
           open={this.state.processingAccordinItemOpen}
           title="待处理" icon={{ value: 'bell', color: 'red', size: this.accordinIconSize }}
           onClick={this.onProcessingAccordinItemClicked}>
           <AtList hasBorder={true}>
-            {/* <AtListItem title={"第一行标题"} arrow="right" >
-
-            </AtListItem> */}
-
             {this.state.processingItems.map((item, index) => {
               return <View>
                 <AtListItem
                   title={(index + 1) + '.订单号：' + item.orderCode}
                   arrow="right"
-                  // note={item.id}
                   extraText="详细消息"
                   onClick={this.loadClickedItem}>
                 </AtListItem>
-                {/* <AtInput value={item.title}></AtInput> */}
               </View>
             })}
           </AtList>
         </AtAccordion>
         <AtAccordion open={this.accoedinItemOpen} title="已处理" icon={{ value: 'check', color: 'green', size: this.accordinIconSize }}></AtAccordion>
         <AtAccordion open={this.accoedinItemOpen} title="草稿箱" icon={{ value: 'list', color: 'darkcyan', size: this.accordinIconSize }}></AtAccordion>
-        {/* <View className='view-content-self'>
-          <AtTabBar
-            tabList={[
-              {
-                title: '事项', text: 8
-              },
-              {
-                title: '消息', dot: true
-              },
-              {
-                title: '我的', text: 10
-              }
-            ]}
-            onClick={(value) => this.handleClick(value)}
-            current={this.state.current}
-            fixed={true}
-            fontSize={18}
-            style={{ inlineHeight: '64px', backgroundColor: 'steelblue' }}>
-
-          </AtTabBar>
-        </View> */}
       </View>
     )
   }
