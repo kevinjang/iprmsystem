@@ -21,6 +21,7 @@ class Logs extends Component {
                 lang: 'zh_CN',
                 timeout: 10000,
                 success: (result) => {
+                    console.log('getUserInfo-result',result)
                     this.setState({
                         userName: result.userInfo.nickName,
                         userImgUrl: result.userInfo.avatarUrl
