@@ -1,9 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx'
-import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui';
+import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 import './orderInfo.styl'
+
+import MaterialInfo from './materialInfo'
+import { Provider } from '@tarojs/mobx/dist';
 
 @inject('orderStore')
 @observer
@@ -12,12 +15,15 @@ class OrderInfo extends Component {
         super(props)
         const { orderStore } = this.props
         this.orderStore = orderStore
-        this.item = this.orderStore.getItem(this.orderStore.getSelectedOrderCode());
+        this.item = this.orderStore.getItem(this.orderStore.getSelectedCRSEventCode());
         this.state = {
             basicInforOpen: true,
             auditOpinionOpen: false,
             loading: true,
-            actionSheetIsOpened: false
+            actionSheetIsOpened: false,
+            floatLayoutOpened: false,
+            // list - true, grid - false
+            listOrGrid: true
         }
     }
     componentWillMount() {
@@ -58,10 +64,16 @@ class OrderInfo extends Component {
         })
     }
 
-    onAgreeClick = ()=>{
+    materialButtonClicked = () => {
+        this.setState({
+            floatLayoutOpened: true
+        })
+    }
+
+    onAgreeClick = () => {
         Taro.showToast({
-            title: this.item.orderCode,
-            icon:'success',
+            title: this.item.CRSEventCode,
+            icon: 'success',
             duration: 2000
         })
         this.setState({ actionSheetIsOpened: false })
@@ -70,43 +82,82 @@ class OrderInfo extends Component {
     render() {
         return <View>
             <View className='panel__title' >
-                {this.item.orderCode}
+                {this.item.CRSEventCode}
                 <View style={{ float: 'right', marginRight: '50rpx' }}>
-                    <AtButton type='primary' size='small' onClick={this.processButtonClicked}>处理</AtButton>
+                    <AtButton type='secondary' size='small' style={{ marginRight: '25px' }} onClick={this.materialButtonClicked}>物料</AtButton>
+                    <AtButton type='primary' size='small' style={{ marginLeft: '25px' }} onClick={this.processButtonClicked}>处理</AtButton>
                 </View>
             </View>
             <View >
+                <View style={{ float: 'right', paddingRight: '100rpx' }}>
+                    {/* <Image src='' onClick={()=>{console.log('hiahia')}}>
+
+                    </Image> */}
+                    <AtIcon
+                        value={this.state.listOrGrid ? 'at-icon at-icon-align-left' : 'at-icon at-icon-stop'}
+                        hasBorder={true}
+                        style={{ border: '1px solid gray' }}
+                        onClick={() => {
+                            this.setState({
+                                listOrGrid: !this.state.listOrGrid
+                            })
+                        }}>
+
+                    </AtIcon>
+                </View>
                 <AtAccordion
-                    title='报告信息'
+                    title='投诉信息'
                     onClick={this.basicInforToggleOpen}
                     open={this.state.basicInforOpen}
                     icon={{ value: 'bullet-list', color: 'red', size: 15 }}>
 
                     <AtList hasBorder={false}>
-                        <AtListItem title='订单号' note={this.item.orderCode.toString()} >
+                        <AtListItem title='投诉单号' note={this.item.CRSEventCode.toString()} >
                         </AtListItem>
-                        <AtListItem title='交货单号' note={this.item.deliveryCode.toString()} >
+                        <AtListItem title='客户名称' note={this.item.CustomerName.toString()} >
                         </AtListItem>
-                        <AtListItem title='客户名称' note={this.item.clientName.toString()} >
+                        <AtListItem title='客户合同号' note={this.item.CusContractCode.toString()} >
                         </AtListItem>
-                        <AtListItem title='物料编码' note={this.item.materialCode.toString()} >
+                        <AtListItem title='客户负责人' note={this.item.CusSalesMan.toString()} >
                         </AtListItem>
                         <AtListItem
-                            title='物料描述'
+                            title='负责人电话'
                             // note={this.item.materialName.toString()} 
-                            note={this.item.materialName.toString()}>
+                            note={this.item.PhoneNo.toString()}>
                         </AtListItem>
-                        <AtListItem title='承运商' note={this.item.carrier.toString()} >
+                        <AtListItem title='所属战区' note={this.item.TheatreCommand.toString()} >
                         </AtListItem>
-                        <AtListItem title='运输方式' note={this.item.transportation.toString()} >
+                        <AtListItem title='所属省区' note={this.item.Province.toString()} >
                         </AtListItem>
-                        <AtListItem title='收货地址' note={this.item.receivingAddress.toString()} >
+                        <AtListItem title='办事处' note={this.item.Office.toString()} >
                         </AtListItem>
-                        <AtListItem title='发出库位' note={this.item.storage.toString()} >
+                        {/* <AtListItem title='发现窜货详细地点' note={this.item.LocateDistrict.toString()} >
+                        </AtListItem> */}
+                        <AtListItem title='发现窜货的省' note={this.item.LocateProvince.toString()} >
                         </AtListItem>
-                        <AtListItem title='计划瓶数' note={this.item.plannedBottle.toString()} >
+                        <AtListItem title='发现窜货的市' note={this.item.LocateCity.toString()} >
                         </AtListItem>
-                        <AtListItem title='计划箱数' note={this.item.plannedCarton.toString()} >
+                        <AtListItem title='发现窜货的县' note={this.item.LocateDistrict.toString()} >
+                        </AtListItem>
+
+
+                        <AtListItem title='投诉内容' note={this.item.ComplainContent.toString()} >
+                        </AtListItem>
+                        <AtListItem
+                            title='提报时间'
+                            note={this.item.SubmitTime.toString()}>
+                        </AtListItem>
+                        <AtListItem title='投诉状态' note={this.item.EventStatu.toString()} >
+                        </AtListItem>
+                        <AtListItem title='提报用户' note={this.item.UserAccountID.toString()} >
+                        </AtListItem>
+                        <AtListItem title='证据状态' note={this.item.ProofStatu.toString()} >
+                        </AtListItem>
+                        <AtListItem title='证据ID' note={this.item.ProofID.toString()} >
+                        </AtListItem>
+                        <AtListItem title='事业部' note={this.item.BUDept.toString()} >
+                        </AtListItem>
+                        <AtListItem title='数据生成时间' note={this.item.CreateTime.toString()} >
                         </AtListItem>
                         {/* <AtListItem title='订单号' note={this.item.orderCode.toString()} >
                     </AtListItem> */}
@@ -128,15 +179,24 @@ class OrderInfo extends Component {
                     onClose={() => { this.setState({ actionSheetIsOpened: false }) }}
                     cancelText='取消'>
                     <AtActionSheetItem onClick={this.onAgreeClick}>
-                        <Text style={{color: 'green',fontSize:'bold'}}>同意</Text>
+                        <Text style={{ color: 'green', fontSize: 'bold' }}>同意</Text>
                     </AtActionSheetItem>
                     <AtActionSheetItem>
-                    <Text style={{color: 'red',fontSize:'bold'}}>退回</Text>
+                        <Text style={{ color: 'red', fontSize: 'bold' }}>退回</Text>
                     </AtActionSheetItem>
-                    <AtActionSheetItem style={{color:'red'}}>
+                    <AtActionSheetItem style={{ color: 'red' }}>
                         结束
                     </AtActionSheetItem>
                 </AtActionSheet>
+            </View>
+            <View>
+                <AtFloatLayout
+                    isOpened={this.state.floatLayoutOpened} title='物料行项目信息'
+                    onClose={() => { this.setState({ floatLayoutOpened: false }) }}>
+                    <Provider store={this.orderStore}>
+                        <MaterialInfo></MaterialInfo>
+                    </Provider>
+                </AtFloatLayout>
             </View>
         </View>
     }

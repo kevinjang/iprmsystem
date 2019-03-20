@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import  { getCRSEventTitle } from '../../utils/requestWithFly'
+// import  { getCRSEventTitle } from '../../utils/requestWithFly'
+import {CRS} from '../../models/CRSEventData'
 import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer, AtAccordion, AtBadge, AtList, AtListItem, AtInput } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
@@ -22,27 +23,25 @@ export default class Index extends Component {
       currentPage: 1
     }
 
-    this.orderStore = orderStore
+    // console.log('index-CRS',CRS)
 
-    // console.log('index-orderStore',this.orderStore)
-    
-    const orders = []
+    this.orderStore = orderStore    
+    let orders = []
+    let subOrders = []
 
-    getCRSEventTitle({
-      pageSize: this.state.pageSize,
-      currentPage: this.state.currentPage
-    }).then(result=>{
-      console.log('getCRSEventTitle-result', result);
-    })
-    .catch(error=>{
-      console.log('getCRSEventTitle-error', error);
-    })
+    orders = CRS.CRSEventTitle;
+    subOrders = CRS.CRSEventDetail;
 
     for(let index in orders){
-      // console.log('index-orders',item)
       const item = orders[index]
-      this.orderStore.addItem(item)
+      this.orderStore.addTitleItem(item)
     }
+
+    for(let index in subOrders){
+      const item = subOrders[index]
+      this.orderStore.addDetailItem(item)
+    }
+    // console.log('this.orderStore.getItems()',this.orderStore.getItems())
 
     this.setState({
       processingItems: Array.from(this.orderStore.getItems())
@@ -56,8 +55,6 @@ export default class Index extends Component {
     this.setState({
       current: value
     })
-
-    // console.log(value)
   }
 
   toggleDrawer = () => {
@@ -68,16 +65,9 @@ export default class Index extends Component {
   }
 
   onDrawerItemClick = (index) => {
-    // console.log(this.state.menus[index])
   }
 
   onProcessingAccordinItemClicked = () => {
-    // const {orderStore} = this.props
-    // console.log('this.props',...(this.props))
-    // this.setState({
-    //   processingItems: orderStore.getItems()
-    // })
-
     let curr = !this.state.processingAccordinItemOpen
     this.setState({
       processingAccordinItemOpen: curr
@@ -88,11 +78,12 @@ export default class Index extends Component {
     
   }
 
-  // compo
+  loadClickedItem = (e,v) => {
+    console.log('arguments',arguments)
+    // const {orderStore} = arguments
 
-  loadClickedItem = (e) => {
-    const orderCode = e._relatedInfo.anchorTargetText.split('：')[1]
-    this.orderStore.setSelectedOrderCode(orderCode)
+    const CRSEventCode = e._relatedInfo.anchorTargetText.split('：')[1]
+    this.orderStore.setSelectedCRSEventCode(CRSEventCode)
 
     Taro.navigateTo({
       url: '/pages/orderInfo/orderInfo'
@@ -106,16 +97,16 @@ export default class Index extends Component {
           open={this.state.processingAccordinItemOpen}
           title="待处理" icon={{ value: 'bell', color: 'red', size: this.accordinIconSize }}
           onClick={this.onProcessingAccordinItemClicked}>
+          {console.log('this.state.processingItems',this.state.processingItems)}
           <AtList hasBorder={true}>
             {this.state.processingItems.map((item, index) => {
-              return <View>
-                <AtListItem
-                  title={(index + 1) + '.订单号：' + item.orderCode}
-                  arrow="right"
-                  extraText="详细消息"
-                  onClick={this.loadClickedItem}>
-                </AtListItem>
-              </View>
+              return <AtListItem
+                title={(index + 1) + '.投诉单号：' + item.CRSEventCode}
+                data={{code:item.CRSEventCode}}
+                arrow="right"
+                extraText="详细消息"
+                onClick={this.loadClickedItem}>
+              </AtListItem>
             })}
           </AtList>
         </AtAccordion>
