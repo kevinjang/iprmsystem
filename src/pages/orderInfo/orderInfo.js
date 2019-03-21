@@ -93,7 +93,7 @@ class OrderInfo extends Component {
                     {/* <Image src='' onClick={()=>{console.log('hiahia')}}>
 
                     </Image> */}
-                    <AtIcon
+                    {/* <AtIcon
                         value={this.state.listOrGrid ? 'at-icon at-icon-align-left' : 'at-icon at-icon-stop'}
                         hasBorder={true}
                         style={{ border: '1px solid gray' }}
@@ -103,7 +103,7 @@ class OrderInfo extends Component {
                             })
                         }}>
 
-                    </AtIcon>
+                    </AtIcon> */}
                 </View>
                 <AtAccordion
                     title='投诉信息'

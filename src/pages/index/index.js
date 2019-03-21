@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 // import  { getCRSEventTitle } from '../../utils/requestWithFly'
-import {CRS} from '../../models/CRSEventData'
+import { CRS } from '../../models/CRSEventData'
 import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer, AtAccordion, AtBadge, AtList, AtListItem, AtInput } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
-import {inject, observer} from '@tarojs/mobx'
+import { inject, observer } from '@tarojs/mobx'
 // import { observer } from '@tarojs/mobx/dist';
 
 @inject('orderStore')
@@ -12,7 +12,7 @@ import {inject, observer} from '@tarojs/mobx'
 export default class Index extends Component {
   constructor() {
     super(...arguments)
-    const {orderStore} = this.props
+    const { orderStore } = this.props
     this.state = {
       current: 0,
       showDrawer: false,
@@ -25,19 +25,19 @@ export default class Index extends Component {
 
     // console.log('index-CRS',CRS)
 
-    this.orderStore = orderStore    
+    this.orderStore = orderStore
     let orders = []
     let subOrders = []
 
     orders = CRS.CRSEventTitle;
     subOrders = CRS.CRSEventDetail;
 
-    for(let index in orders){
+    for (let index in orders) {
       const item = orders[index]
       this.orderStore.addTitleItem(item)
     }
 
-    for(let index in subOrders){
+    for (let index in subOrders) {
       const item = subOrders[index]
       this.orderStore.addDetailItem(item)
     }
@@ -75,11 +75,11 @@ export default class Index extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
-  loadClickedItem = (e,v) => {
-    console.log('arguments',arguments)
+  loadClickedItem = (e, v) => {
+    console.log('arguments', arguments)
     // const {orderStore} = arguments
 
     const CRSEventCode = e._relatedInfo.anchorTargetText.split('：')[1]
@@ -97,12 +97,12 @@ export default class Index extends Component {
           open={this.state.processingAccordinItemOpen}
           title="待处理" icon={{ value: 'bell', color: 'red', size: this.accordinIconSize }}
           onClick={this.onProcessingAccordinItemClicked}>
-          {console.log('this.state.processingItems',this.state.processingItems)}
+          {/* {console.log('this.state.processingItems',this.state.processingItems)} */}
           <AtList hasBorder={true}>
             {this.state.processingItems.map((item, index) => {
               return <AtListItem
                 title={(index + 1) + '.投诉单号：' + item.CRSEventCode}
-                data={{code:item.CRSEventCode}}
+                data={{ code: item.CRSEventCode }}
                 arrow="right"
                 extraText="详细消息"
                 onClick={this.loadClickedItem}>

@@ -27,7 +27,8 @@ class App extends Component {
       'pages/index/index',
       'pages/logs/logs',
       'pages/notification/notification',
-      'pages/orderInfo/orderInfo'
+      'pages/orderInfo/orderInfo',
+      'pages/orderInfo/materialItemInfo'
     ],
     window: {
       backgroundTextStyle: 'light',

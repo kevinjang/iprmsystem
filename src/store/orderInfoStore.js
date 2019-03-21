@@ -4,6 +4,7 @@ const orderStore = observable({
     selectedCRSEventCode: '',
     orderInfo: [],
     subOrderInfo: [],
+    selectedMaterialItem:{},
     addTitleItem(item) {
         // console.log('orderInfoStore-item',item)
         const index = this.orderInfo.findIndex(v => v.CRSEventCode === item.CRSEventCode);
@@ -33,15 +34,16 @@ const orderStore = observable({
     getSubItemsByCode(CRSEventCode) {
         let suborders = []
         let fullsuborders = Array.from(this.subOrderInfo);
-        console.log(' this.fullsuborders', fullsuborders)
+        // console.log(' this.fullsuborders', fullsuborders)
         for(let index in fullsuborders){
             const item = this.subOrderInfo[index]
+            // console.log('getSubItemsByCode-item',item)
             if(item.CRSEventCode === CRSEventCode){
                 suborders.push(item)
             }
         }
 
-        console.log('getSubItemsByCode-suborders',suborders)
+        // console.log('getSubItemsByCode-suborders',suborders)
         return suborders;
     },
     setSelectedCRSEventCode(CRSEventCode) {
@@ -49,6 +51,12 @@ const orderStore = observable({
     },
     getSelectedCRSEventCode() {
         return this.selectedCRSEventCode;
+    },
+    setSelectedMaterialItem(item){
+        this.selectedMaterialItem = item
+    },
+    getSelectedMaterialItem(){
+        return this.selectedMaterialItem;
     }
 });
 
