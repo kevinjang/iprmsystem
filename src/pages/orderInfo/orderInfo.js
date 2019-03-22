@@ -90,20 +90,6 @@ class OrderInfo extends Component {
             </View>
             <View >
                 <View style={{ float: 'right', paddingRight: '100rpx' }}>
-                    {/* <Image src='' onClick={()=>{console.log('hiahia')}}>
-
-                    </Image> */}
-                    {/* <AtIcon
-                        value={this.state.listOrGrid ? 'at-icon at-icon-align-left' : 'at-icon at-icon-stop'}
-                        hasBorder={true}
-                        style={{ border: '1px solid gray' }}
-                        onClick={() => {
-                            this.setState({
-                                listOrGrid: !this.state.listOrGrid
-                            })
-                        }}>
-
-                    </AtIcon> */}
                 </View>
                 <AtAccordion
                     title='投诉信息'
@@ -122,7 +108,6 @@ class OrderInfo extends Component {
                         </AtListItem>
                         <AtListItem
                             title='负责人电话'
-                            // note={this.item.materialName.toString()} 
                             note={this.item.PhoneNo.toString()}>
                         </AtListItem>
                         <AtListItem title='所属战区' note={this.item.TheatreCommand.toString()} >
@@ -131,8 +116,6 @@ class OrderInfo extends Component {
                         </AtListItem>
                         <AtListItem title='办事处' note={this.item.Office.toString()} >
                         </AtListItem>
-                        {/* <AtListItem title='发现窜货详细地点' note={this.item.LocateDistrict.toString()} >
-                        </AtListItem> */}
                         <AtListItem title='发现窜货的省' note={this.item.LocateProvince.toString()} >
                         </AtListItem>
                         <AtListItem title='发现窜货的市' note={this.item.LocateCity.toString()} >
@@ -159,8 +142,6 @@ class OrderInfo extends Component {
                         </AtListItem>
                         <AtListItem title='数据生成时间' note={this.item.CreateTime.toString()} >
                         </AtListItem>
-                        {/* <AtListItem title='订单号' note={this.item.orderCode.toString()} >
-                    </AtListItem> */}
                     </AtList>
                 </AtAccordion>
                 <AtAccordion

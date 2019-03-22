@@ -33,12 +33,6 @@ class Logs extends Component {
                 },
                 complete: () => { }
             });
-
-            // this.setState({
-            //     loginCode: result.code
-            // },()=>{
-                
-            // })
         }
         catch (err) {
             console.log('err', err)
@@ -76,12 +70,6 @@ class Logs extends Component {
             <View style={{ width: '750rpx', textAlign: 'center', marginTop: '50rpx' }}>
                 <AtButton type="secondary" style={{ marginTop: '100rpx' }}>注销</AtButton>
             </View>
-            {/* <AtModal 
-                isOpened={true}
-                title='确认登录'
-                confirmText='登录'
-                onConfirm={}>
-            </AtModal> */}
         </View>
     }
 }

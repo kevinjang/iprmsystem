@@ -13,16 +13,18 @@ class MaterialItemInfo extends Component {
         this.state = {
             actionsheetOpened: false
         }
-
-        // console.log('MaterialItemInfo-orderStore.getSelectedMaterialItem()',)
     }
 
     onPhotographClicked = () => {
-        const cameraContext = Taro.createCameraContext();
         this.setState({
             actionsheetOpened: true
         })
-        console.log('cameraContext', cameraContext)
+    }
+
+    onTakePhotoClicked = () => {
+        Taro.navigateTo({
+            url: '/pages/utils/camera'
+        })
     }
 
     render() {
@@ -46,17 +48,13 @@ class MaterialItemInfo extends Component {
             </AtList>
 
             <View >
-                {/* <Camera mode='normal' devicePosition='back' flash='off'  style="width: 100%; height: 300px;"></Camera> */}
-
-                {/* <Camera mode='normal' devicePosition='back' flash='off'  style="width: 100%; height: 300px;"></Camera> */}
-
                 <AtButton type='secondary' onClick={this.onPhotographClicked}>拍照</AtButton>
             </View>
-            <AtActionSheet 
-                cancelText='取消' 
+            <AtActionSheet
+                cancelText='取消'
                 isOpened={this.state.actionsheetOpened}
-                onClose={()=>this.setState({actionsheetOpened: false})}>
-                <AtActionSheetItem>
+                onClose={() => this.setState({ actionsheetOpened: false })}>
+                <AtActionSheetItem onClick={this.onTakePhotoClicked}>
                     <Text>拍照</Text>
                 </AtActionSheetItem>
                 <AtActionSheetItem>

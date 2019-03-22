@@ -29,20 +29,9 @@ class MaterialInfo extends Component{
                 dispay: 'none'
             }
         }
-
-        // console.log('materialInfo-suborders',this.state.suborders)
     }
 
     onListItemClicked = (e,v) => {
-        // console.log('onListItemClicked-arguments',...arguments)
-        // console.log('onListItemClicked-e,v',e,v)
-        // this.setState({
-        //     coverViewStyle:{
-        //         ...this.state.coverViewStyle,
-        //         display: 'block'
-        //     }
-        // })
-
         let materialCode = v.currentTarget.dataset.code
 
         const item = this.state.suborders.find(v=>v.MaterialCode === materialCode);
@@ -54,19 +43,11 @@ class MaterialInfo extends Component{
         Taro.navigateTo({
             url: '/pages/orderInfo/materialItemInfo'
         })
-
-        // Taro.showModal({
-        //     title:'物料信息'+v.currentTarget.dataset.code,
-        //     content: '物料明细',
-        //     showCancel: false
-        // })
     }
 
     render(){
         return <View>
             <AtList>
-                {/* <AtListItem></AtListItem> */}
-                {/* {console.log('this.state.suborders',this.state.suborders)} */}
                 {this.state.suborders&&this.state.suborders.map(item=>{
                     return <AtListItem 
                         arrow='right'
@@ -77,11 +58,6 @@ class MaterialInfo extends Component{
                     </AtListItem>
                 })}
             </AtList>
-            {/* <CoverView 
-                style={this.state.coverViewStyle}
-                visible={false}>
-
-            </CoverView> */}
         </View>
     }
 }

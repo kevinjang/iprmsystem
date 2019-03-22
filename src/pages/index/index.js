@@ -80,9 +80,8 @@ export default class Index extends Component {
 
   loadClickedItem = (e, v) => {
     console.log('arguments', arguments)
-    // const {orderStore} = arguments
 
-    const CRSEventCode = e._relatedInfo.anchorTargetText.split('：')[1]
+    const CRSEventCode = v.target.dataset.code;
     this.orderStore.setSelectedCRSEventCode(CRSEventCode)
 
     Taro.navigateTo({
@@ -97,12 +96,11 @@ export default class Index extends Component {
           open={this.state.processingAccordinItemOpen}
           title="待处理" icon={{ value: 'bell', color: 'red', size: this.accordinIconSize }}
           onClick={this.onProcessingAccordinItemClicked}>
-          {/* {console.log('this.state.processingItems',this.state.processingItems)} */}
           <AtList hasBorder={true}>
             {this.state.processingItems.map((item, index) => {
               return <AtListItem
                 title={(index + 1) + '.投诉单号：' + item.CRSEventCode}
-                data={{ code: item.CRSEventCode }}
+                data-code={ item.CRSEventCode }
                 arrow="right"
                 extraText="详细消息"
                 onClick={this.loadClickedItem}>

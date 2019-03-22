@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import Index from './pages/index'
 
-import counterStore from './store/counter'
+// import counterStore from './store/counter'
 import orderStore from './store/orderInfoStore'
 
 import './app.styl'
@@ -16,7 +16,7 @@ import {AtTabBar} from 'taro-ui'
 // }
 
 const store = {
-  counterStore,
+  // counterStore,
   orderStore
 }
 
@@ -28,7 +28,8 @@ class App extends Component {
       'pages/logs/logs',
       'pages/notification/notification',
       'pages/orderInfo/orderInfo',
-      'pages/orderInfo/materialItemInfo'
+      'pages/orderInfo/materialItemInfo',
+      'pages/utils/camera'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -63,41 +64,9 @@ class App extends Component {
 
   constructor(props){
     super(props)
-    
-
-    // console.log('orderStore.getItems()',orderStore.getItems())
   }
 
   componentDidMount () {
-    // const orders = [
-    //   {
-    //     title: "2180778", id: 'x1'
-    //   },
-    //   {
-    //     title: "2186226", id: 'x2'
-    //   },
-    //   {
-    //     title: "2212745", id: 'x3'
-    //   },
-    //   {
-    //     title: "2221711", id: 'x4'
-    //   },
-    //   {
-    //     title: "2223891", id: 'x5'
-    //   }
-    // ]
-
-    // // orders.map((item,index)=>{
-      
-    // // })
-
-    // // console.log('orderStore',orderStore.getItems())
-    // for(let item in orders){
-    //   orderStore.addItem({
-    //     orderCode: item.title,
-    //     id: item.id
-    //   })
-    // }
   }
 
   componentDidShow () {}
