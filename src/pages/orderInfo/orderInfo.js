@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx'
-import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon } from 'taro-ui';
+import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon, AtCard } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 import './orderInfo.styl'
 
@@ -23,7 +23,8 @@ class OrderInfo extends Component {
             actionSheetIsOpened: false,
             floatLayoutOpened: false,
             // list - true, grid - false
-            listOrGrid: true
+            listOrGrid: true,
+            auditOpinions: []
         }
     }
     componentWillMount() {
@@ -44,6 +45,20 @@ class OrderInfo extends Component {
         setTimeout(() => {
             wx.hideLoading();
         }, 500)
+
+        this.setState({
+            auditOpinions: [
+                {
+                    title: '第一审批人', content: '同意'
+                },
+                {
+                    title: '第二审批人', content: '同意'
+                },
+                {
+                    title: '第三审批人', content: '同意'
+                }
+            ]
+        })
     }
 
     basicInforToggleOpen = () => {
@@ -81,13 +96,14 @@ class OrderInfo extends Component {
 
     render() {
         return <View>
-            <View className='panel__title' >
-                {this.item.CRSEventCode}
-                <View style={{ float: 'right', marginRight: '50rpx' }}>
-                    <AtButton type='secondary' size='small' style={{ marginRight: '25px' }} onClick={this.materialButtonClicked}>物料</AtButton>
-                    <AtButton type='primary' size='small' style={{ marginLeft: '25px' }} onClick={this.processButtonClicked}>处理</AtButton>
-                </View>
+            {console.log(this.item.CRSEventCode)}
+            <View style={{ float: 'right', marginRight: '50rpx' }}>
+                <AtButton type='secondary' size='small' style={"margin-right: 25px"} onClick={this.materialButtonClicked}>物料</AtButton>
+                <AtButton type='primary' size='small' onClick={this.processButtonClicked}>处理</AtButton>
             </View>
+            {/* <View className='panel__title' >
+                {this.item.CRSEventCode}
+            </View> */}
             <View >
                 <View style={{ float: 'right', paddingRight: '100rpx' }}>
                 </View>
@@ -150,10 +166,18 @@ class OrderInfo extends Component {
                     icon={{ value: 'message', color: 'darkblue', size: 15 }}
                     onClick={this.auditOpinionToggleOpen}>
 
-                    <AtList hasBorder={false}>
+                    {/* <AtList hasBorder={false}>
                         <AtListItem title='第一审批人' note='同意' >
                         </AtListItem>
-                    </AtList>
+                    </AtList> */}
+
+                    {this.state.auditOpinions.map((item, index) => {
+                        return <View style={{ marginTop: '10px' }}>
+                            <AtCard title={item.title} note={item.content} extra={(index + 1).toString()} isFull={false}>
+
+                            </AtCard>
+                        </View>
+                    })}
                 </AtAccordion>
                 <AtActionSheet
                     isOpened={this.state.actionSheetIsOpened}

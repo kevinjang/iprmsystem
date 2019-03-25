@@ -33,6 +33,7 @@ class App extends Component {
     ],
     window: {
       backgroundTextStyle: 'light',
+      // backgroundColor:'',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '窜货上报管理系统',
       navigationBarTextStyle: 'black'
@@ -43,20 +44,20 @@ class App extends Component {
         {
           text:'HomePage',
           pagePath:'pages/index/index',
-          iconPath: './assets/basic/moon.png',
-          selectedIconPath: './assets/basic/store.png'
+          // iconPath: './assets/basic/moon.png',
+          // selectedIconPath: './assets/basic/store.png'
         },
         {
           text:'消息',
           pagePath:'pages/notification/notification',
-          iconPath: './assets/basic/moon.png',
-          selectedIconPath: './assets/basic/online_shopping.png'
+          // iconPath: './assets/basic/moon.png',
+          // selectedIconPath: './assets/basic/online_shopping.png'
         },
         {
           text:'Me',
           pagePath:'pages/logs/logs',
-          iconPath: './assets/basic/moon.png',
-          selectedIconPath: './assets/basic/online_shopping.png'
+          // iconPath: './assets/basic/moon.png',
+          // selectedIconPath: './assets/basic/online_shopping.png'
         }
       ]
     }
