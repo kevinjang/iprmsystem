@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtAvatar, AtButton } from 'taro-ui';
+import { AtAvatar, AtButton, AtModal } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 
 class Logs extends Component {
@@ -11,16 +11,18 @@ class Logs extends Component {
 
         this.state = {
             userName: '',
-            userImgUrl: ''
+            userImgUrl: '',
+            loginCode: '',
+            showLoginModal: true
         }
 
         try {
-            const accountInfo = wx.getAccountInfoSync();
             wx.getUserInfo({
                 withCredentials: 'false',
                 lang: 'zh_CN',
                 timeout: 10000,
                 success: (result) => {
+                    console.log('getUserInfo-result',result)
                     this.setState({
                         userName: result.userInfo.nickName,
                         userImgUrl: result.userInfo.avatarUrl
@@ -36,6 +38,10 @@ class Logs extends Component {
             console.log('err', err)
         }
     }
+
+    onLoginConfirm = () =>{
+
+    }
     render() {
         return <View>
             <AtAvatar
@@ -49,6 +55,15 @@ class Logs extends Component {
             <View style={{ width: '750rpx', textAlign: 'center', marginTop: '100rpx' }}>
                 {this.state.userName}
             </View>
+            
+            <View style={{ width: '750rpx', textAlign: 'center', marginTop: '100rpx'}}>
+                <AtButton 
+                    openType='getUserInfo' 
+                    type='primary' 
+                    style={{ marginTop: '100rpx'}}
+                    >登录</AtButton>
+            </View>
+
             <View style={{ width: '750rpx', textAlign: 'center', marginTop: '100rpx' }}>
                 <AtButton type='primary' style={{ marginTop: '100rpx' }}>认证</AtButton>
             </View>

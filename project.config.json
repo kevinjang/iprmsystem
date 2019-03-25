@@ -4,11 +4,12 @@
 	"description": "窜货上报管理系统",
 	"appid": "wxd74c7c897dbc8288",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
 		"minified": false,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false
 	},
 	"compileType": "miniprogram",
 	"condition": {}

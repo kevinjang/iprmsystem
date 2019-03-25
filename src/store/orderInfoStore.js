@@ -1,35 +1,57 @@
-import {observable} from 'mobx'
+import { observable } from 'mobx'
 
 const orderStore = observable({
-    selectedOrderCode:'',
-    orderInfo:[],
-    addItem(item){
-        // console.log('orderInfoStore-item',item)
-        const index = this.orderInfo.findIndex(v=>v.orderCode === item.orderCode);
-        // console.log('addItem',item)
-        if(index>-1){
+    selectedCRSEventCode: '',
+    orderInfo: [],
+    subOrderInfo: [],
+    selectedMaterialItem:{},
+    addTitleItem(item) {
+        const index = this.orderInfo.findIndex(v => v.CRSEventCode === item.CRSEventCode);
+        if (index > -1) {
             return;
         }
-        else{
+        else {
             this.orderInfo.push(item)
         }
     },
-    getItem(orderCode){
-        const item = this.orderInfo.find(v=>v.orderCode === orderCode)
+    addDetailItem(item) {
+        const index = this.subOrderInfo.findIndex(v => v.CRSEventCode === item.CRSEventCode && v.EventLineID === item.EventLineID);
+        if (index > -1) {
+            return;
+        } else {
+            this.subOrderInfo.push(item)
+        }
+    },
+    getItem(CRSEventCode) {
+        const item = this.orderInfo.find(v => v.CRSEventCode === CRSEventCode)
         return item;
     },
-    getItems(){
-        // console.log('orderInfo',this.orderInfo)
-        // for(let item in this.orderInfo){
-        //     console.log('orderStore-item',item)
-        // }
+    getItems() {
         return this.orderInfo
     },
-    setSelectedOrderCode(orderCode){
-        this.selectedOrderCode = orderCode;
+    getSubItemsByCode(CRSEventCode) {
+        let suborders = []
+        let fullsuborders = Array.from(this.subOrderInfo);
+        for(let index in fullsuborders){
+            const item = this.subOrderInfo[index]
+            if(item.CRSEventCode === CRSEventCode){
+                suborders.push(item)
+            }
+        }
+
+        return suborders;
     },
-    getSelectedOrderCode(){
-        return this.selectedOrderCode;
+    setSelectedCRSEventCode(CRSEventCode) {
+        this.selectedCRSEventCode = CRSEventCode;
+    },
+    getSelectedCRSEventCode() {
+        return this.selectedCRSEventCode;
+    },
+    setSelectedMaterialItem(item){
+        this.selectedMaterialItem = item
+    },
+    getSelectedMaterialItem(){
+        return this.selectedMaterialItem;
     }
 });
 
