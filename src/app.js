@@ -29,7 +29,8 @@ class App extends Component {
       'pages/notification/notification',
       'pages/orderInfo/orderInfo',
       'pages/orderInfo/materialItemInfo',
-      'pages/utils/camera'
+      'pages/utils/camera',
+      'pages/utils/myPreviewImage'
     ],
     window: {
       backgroundTextStyle: 'light',

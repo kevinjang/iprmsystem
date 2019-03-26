@@ -1,12 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx'
-import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon, AtCard } from 'taro-ui';
+import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon, AtCard, AtSegmentedControl } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 import './orderInfo.styl'
 
 import MaterialInfo from './materialInfo'
 import { Provider } from '@tarojs/mobx/dist';
+
+import { CRS } from '../../models/CRSEventData'
 
 @inject('orderStore')
 @observer
@@ -24,7 +26,9 @@ class OrderInfo extends Component {
             floatLayoutOpened: false,
             // list - true, grid - false
             listOrGrid: true,
-            auditOpinions: []
+            auditOpinions: [],
+            segs: [],
+            columnsInfo: []
         }
     }
     componentWillMount() {
@@ -57,7 +61,9 @@ class OrderInfo extends Component {
                 {
                     title: '第三审批人', content: '同意'
                 }
-            ]
+            ],
+            columnsInfo: CRS.CRSEventTitleColumnsInfo,
+            segs: [this.item.CRSEventCode]
         })
     }
 
@@ -96,68 +102,35 @@ class OrderInfo extends Component {
 
     render() {
         return <View>
-            {console.log(this.item.CRSEventCode)}
-            <View style={{ float: 'right', marginRight: '50rpx' }}>
-                <AtButton type='secondary' size='small' style={"margin-right: 25px"} onClick={this.materialButtonClicked}>物料</AtButton>
-                <AtButton type='primary' size='small' onClick={this.processButtonClicked}>处理</AtButton>
+            <View>
+                <View style={{padding:'0 35px'}}>
+                <AtSegmentedControl
+                    values={this.state.segs}
+                    fontSize={50}>
+
+                </AtSegmentedControl></View>
+
+                <View style={{ float: 'right',  marginTop: '10px' }}>
+                    <AtButton type='secondary' size='small' style={"margin-right: 25px"} onClick={this.materialButtonClicked}>物料</AtButton>
+                    <AtButton type='primary' size='small' style={"margin-right: 35px"} onClick={this.processButtonClicked}>处理</AtButton>
+                </View>
             </View>
-            {/* <View className='panel__title' >
-                {this.item.CRSEventCode}
-            </View> */}
             <View >
                 <View style={{ float: 'right', paddingRight: '100rpx' }}>
                 </View>
                 <AtAccordion
                     title='投诉信息'
+                    style={'background-color:steelblue;color:white;'}
                     onClick={this.basicInforToggleOpen}
                     open={this.state.basicInforOpen}
                     icon={{ value: 'bullet-list', color: 'red', size: 15 }}>
 
                     <AtList hasBorder={false}>
-                        <AtListItem title='投诉单号' note={this.item.CRSEventCode.toString()} >
-                        </AtListItem>
-                        <AtListItem title='客户名称' note={this.item.CustomerName.toString()} >
-                        </AtListItem>
-                        <AtListItem title='客户合同号' note={this.item.CusContractCode.toString()} >
-                        </AtListItem>
-                        <AtListItem title='客户负责人' note={this.item.CusSalesMan.toString()} >
-                        </AtListItem>
-                        <AtListItem
-                            title='负责人电话'
-                            note={this.item.PhoneNo.toString()}>
-                        </AtListItem>
-                        <AtListItem title='所属战区' note={this.item.TheatreCommand.toString()} >
-                        </AtListItem>
-                        <AtListItem title='所属省区' note={this.item.Province.toString()} >
-                        </AtListItem>
-                        <AtListItem title='办事处' note={this.item.Office.toString()} >
-                        </AtListItem>
-                        <AtListItem title='发现窜货的省' note={this.item.LocateProvince.toString()} >
-                        </AtListItem>
-                        <AtListItem title='发现窜货的市' note={this.item.LocateCity.toString()} >
-                        </AtListItem>
-                        <AtListItem title='发现窜货的县' note={this.item.LocateDistrict.toString()} >
-                        </AtListItem>
-
-
-                        <AtListItem title='投诉内容' note={this.item.ComplainContent.toString()} >
-                        </AtListItem>
-                        <AtListItem
-                            title='提报时间'
-                            note={this.item.SubmitTime.toString()}>
-                        </AtListItem>
-                        <AtListItem title='投诉状态' note={this.item.EventStatu.toString()} >
-                        </AtListItem>
-                        <AtListItem title='提报用户' note={this.item.UserAccountID.toString()} >
-                        </AtListItem>
-                        <AtListItem title='证据状态' note={this.item.ProofStatu.toString()} >
-                        </AtListItem>
-                        <AtListItem title='证据ID' note={this.item.ProofID.toString()} >
-                        </AtListItem>
-                        <AtListItem title='事业部' note={this.item.BUDept.toString()} >
-                        </AtListItem>
-                        <AtListItem title='数据生成时间' note={this.item.CreateTime.toString()} >
-                        </AtListItem>
+                        {this.state.columnsInfo.map((item, index) => {
+                            let note = item.note
+                            return <AtListItem title={item.title} note={this.item[note].toString()} >
+                            </AtListItem>
+                        })}
                     </AtList>
                 </AtAccordion>
                 <AtAccordion
@@ -166,11 +139,6 @@ class OrderInfo extends Component {
                     icon={{ value: 'message', color: 'darkblue', size: 15 }}
                     onClick={this.auditOpinionToggleOpen}>
 
-                    {/* <AtList hasBorder={false}>
-                        <AtListItem title='第一审批人' note='同意' >
-                        </AtListItem>
-                    </AtList> */}
-
                     {this.state.auditOpinions.map((item, index) => {
                         return <View style={{ marginTop: '10px' }}>
                             <AtCard title={item.title} note={item.content} extra={(index + 1).toString()} isFull={false}>
@@ -178,6 +146,7 @@ class OrderInfo extends Component {
                             </AtCard>
                         </View>
                     })}
+
                 </AtAccordion>
                 <AtActionSheet
                     isOpened={this.state.actionSheetIsOpened}

@@ -29,6 +29,10 @@ class MaterialItemInfo extends Component {
 
     render() {
         return <View>
+
+            <View >
+                <AtButton type='secondary' onClick={this.onPhotographClicked}>拍照</AtButton>
+            </View>
             <AtList>
                 <AtListItem title='产品编码' note={this.materialItem.MaterialCode} />
                 <AtListItem title='产品名称' note={this.materialItem.MaterialName} />

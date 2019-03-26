@@ -3,6 +3,7 @@ import Taro, { Component, createCameraContext } from '@tarojs/taro'
 import { Image, View, Input } from '@tarojs/components';
 import { AtButton, AtGrid, AtIcon } from 'taro-ui'
 import cameraStore from '../../store/cameraStore'
+// import MyPreviewImage from './myPreviewImage'
 
 import 'taro-ui/dist/weapp/css/index.css'
 
@@ -47,13 +48,14 @@ class CameraX extends Component {
                     pics.push(url)
                 });
                 pics.push(result.tempImagePath)
+                pics = pics.reverse()
 
+                cameraStore.setCurrentImageUrls(pics)
                 that.setState({
                     thumbnail: result.tempImagePath,
                     picUrls: pics
                 })
 
-                // cameraStore.setCurrentImageUrl(result.tempImagePath)
             },
             fail(err) {
                 console.log('takePhoto-fail-err', err)
@@ -64,17 +66,21 @@ class CameraX extends Component {
         })
     }
     onPreviewImage = () => {
-        wx.previewImage({
-            urls: this.state.picUrls,
-            success(result) {
-                console.log('previewimage-result', result)
-            },
-            fail(err) {
-                console.error(err)
-            },
-            complete() {
+        // wx.previewImage({
+        //     urls: this.state.picUrls,
+        //     success(result) {
+        //         console.log('previewimage-result', result)
+        //     },
+        //     fail(err) {
+        //         console.error(err)
+        //     },
+        //     complete() {
 
-            }
+        //     }
+        // })
+
+        Taro.navigateTo({
+            url: '/pages/utils/myPreviewImage'
         })
     }
     setSetState = ({ thumbnail }) => {
@@ -92,16 +98,17 @@ class CameraX extends Component {
                 quality='high'>
 
             </camera>
-            <View className='at-row'>
+            <View className='at-row' style={'margin-top: 10px'}>
                 <View className='at-col'>
                     <AtButton
-                        size='small'
+                        // size='small'
                         onClick={() => Taro.navigateBack()}
                         circle={true}>退出</AtButton>
                 </View>
                 <View className='at-col'>
                     <AtButton
-                        size='small'
+                        type='primary'
+                        // size='small'
                         onClick={this.onTakePhotoClicked}
                         circle={true}>拍照</AtButton>
                 </View>

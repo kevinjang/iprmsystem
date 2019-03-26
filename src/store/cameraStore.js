@@ -10,6 +10,12 @@ const cameraStore = observable({
     getCurrentImageUrl() {
         return this.currentImageUrl;
     },
+    setCurrentImageUrls(urls){
+        this.currentImageUrls = urls
+    },
+    getCurrentImageUrls(){
+        return this.currentImageUrls
+    },
     addOneImageUrlIntoCurrentImageUrls(url) {
         const index = this.currentImageUrls.findIndex(v => v === url)
 

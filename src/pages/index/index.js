@@ -1,11 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-// import  { getCRSEventTitle } from '../../utils/requestWithFly'
 import { CRS } from '../../models/CRSEventData'
 import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer, AtAccordion, AtBadge, AtList, AtListItem, AtInput } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
 import { inject, observer } from '@tarojs/mobx'
-// import { observer } from '@tarojs/mobx/dist';
 
 @inject('orderStore')
 @observer
@@ -23,8 +21,6 @@ export default class Index extends Component {
       currentPage: 1
     }
 
-    // console.log('index-CRS',CRS)
-
     this.orderStore = orderStore
     let orders = []
     let subOrders = []
@@ -41,8 +37,6 @@ export default class Index extends Component {
       const item = subOrders[index]
       this.orderStore.addDetailItem(item)
     }
-    // console.log('this.orderStore.getItems()',this.orderStore.getItems())
-
     this.setState({
       processingItems: Array.from(this.orderStore.getItems())
     })

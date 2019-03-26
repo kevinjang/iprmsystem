@@ -8,8 +8,6 @@ import { AtList, AtListItem } from 'taro-ui';
 class MaterialInfo extends Component{
     constructor(props){
         super(props)
-        // this.state = {
-        // }
     }
 
     componentDidMount(){
@@ -36,7 +34,6 @@ class MaterialInfo extends Component{
 
         const item = this.state.suborders.find(v=>v.MaterialCode === materialCode);
 
-        // this.orderStore.
 
         this.orderStore.setSelectedMaterialItem(item)
 
