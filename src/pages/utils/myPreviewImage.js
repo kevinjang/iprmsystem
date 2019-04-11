@@ -13,7 +13,6 @@ export default class MyPreviewImage extends Component {
         }
     }
 
-
     componentDidMount() {
         if (cameraStore) {
             const newUrls = cameraStore.getCurrentImageUrls()
@@ -27,16 +26,11 @@ export default class MyPreviewImage extends Component {
         const that = this
         Taro.getSystemInfo({
             success(result){
-                // console.log(result)
                 that.setState({
                     windowHeight: result.windowHeight - 50
                 })
-
-                console.log('windowHeight:',result.windowHeight)
-                console.log('screenHeight:', result.screenHeight)
             },
             fail(err){
-                console.log(err)
             }
         })
     }

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx'
-import { AtList, AtListItem, AtAccordion, AtInput, AtModal, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtIcon, AtCard, AtSegmentedControl } from 'taro-ui';
+import { AtList, AtListItem, AtAccordion,  AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtCard } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 import './orderInfo.styl'
 
@@ -24,10 +24,8 @@ class OrderInfo extends Component {
             loading: true,
             actionSheetIsOpened: false,
             floatLayoutOpened: false,
-            // list - true, grid - false
             listOrGrid: true,
             auditOpinions: [],
-            segs: [],
             columnsInfo: []
         }
     }
@@ -42,10 +40,7 @@ class OrderInfo extends Component {
             complete: () => { }
         });
     }
-    // orderStore;
     componentDidMount() {
-        // console.log(123)
-
         setTimeout(() => {
             wx.hideLoading();
         }, 500)
@@ -62,9 +57,12 @@ class OrderInfo extends Component {
                     title: '第三审批人', content: '同意'
                 }
             ],
-            columnsInfo: CRS.CRSEventTitleColumnsInfo,
-            segs: [this.item.CRSEventCode]
+            columnsInfo: CRS.CRSEventTitleColumnsInfo
         })
+
+        wx.setNavigationBarTitle({
+            title: this.item.CRSEventCode
+        });
     }
 
     basicInforToggleOpen = () => {
@@ -73,7 +71,6 @@ class OrderInfo extends Component {
         })
     }
     auditOpinionToggleOpen = () => {
-        // console.log('xxx')
         this.setState({
             auditOpinionOpen: !this.state.auditOpinionOpen
         })
@@ -100,16 +97,26 @@ class OrderInfo extends Component {
         this.setState({ actionSheetIsOpened: false })
     }
 
+    onScanCode = () =>{
+        // Taro.navigateTo({
+        //     url:'/pages/uploadProof/uploadProof'
+        // })
+        wx.scanCode({
+            onlyFromCamera: false,
+            scanType: ['qrCode','barCode','datamatrix','pdf417'],
+            success: (result)=>{
+                Taro.showToast({
+                    title: result.result
+                })
+            },
+            fail: ()=>{},
+            complete: ()=>{}
+        });
+    }
+
     render() {
         return <View>
             <View>
-                <View style={{padding:'0 35px'}}>
-                <AtSegmentedControl
-                    values={this.state.segs}
-                    fontSize={50}>
-
-                </AtSegmentedControl></View>
-
                 <View style={{ float: 'right',  marginTop: '10px' }}>
                     <AtButton type='secondary' size='small' style={"margin-right: 25px"} onClick={this.materialButtonClicked}>物料</AtButton>
                     <AtButton type='primary' size='small' style={"margin-right: 35px"} onClick={this.processButtonClicked}>处理</AtButton>
@@ -160,6 +167,9 @@ class OrderInfo extends Component {
                     </AtActionSheetItem>
                     <AtActionSheetItem style={{ color: 'red' }}>
                         结束
+                    </AtActionSheetItem>
+                    <AtActionSheetItem style={{ color: 'red' }} onClick={this.onScanCode}>
+                        <Text style={{ color: 'green', fontSize: 'bold' }}>扫码</Text>
                     </AtActionSheetItem>
                 </AtActionSheet>
             </View>

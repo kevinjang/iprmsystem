@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { CRS } from '../../models/CRSEventData'
-import { AtTabBar, AtCard, AtButton, AtIcon, AtDrawer, AtAccordion, AtBadge, AtList, AtListItem, AtInput } from 'taro-ui'
+import { AtAccordion, AtList, AtListItem } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
 import { inject, observer } from '@tarojs/mobx'
@@ -13,12 +13,8 @@ export default class Index extends Component {
     const { orderStore } = this.props
     this.state = {
       current: 0,
-      showDrawer: false,
-      menus: ['待处理', '已处理', '草稿'],
       processingAccordinItemOpen: false,
-      processingItems: [],
-      pageSize: 20,
-      currentPage: 1
+      processingItems: []
     }
 
     this.orderStore = orderStore
@@ -45,39 +41,15 @@ export default class Index extends Component {
   accordinIconSize = 15
   accoedinItemOpen = false
 
-  handleClick = (value) => {
-    this.setState({
-      current: value
-    })
-  }
-
-  toggleDrawer = () => {
-    const visi = this.state.showDrawer;
-    this.setState({
-      showDrawer: !visi
-    })
-  }
-
-  onDrawerItemClick = (index) => {
-  }
-
   onProcessingAccordinItemClicked = () => {
-    let curr = !this.state.processingAccordinItemOpen
     this.setState({
-      processingAccordinItemOpen: curr
+      processingAccordinItemOpen: !this.state.processingAccordinItemOpen
     })
-  }
-
-  componentDidMount() {
-
   }
 
   loadClickedItem = (e, v) => {
-    console.log('arguments', arguments)
-
     const CRSEventCode = v.target.dataset.code;
     this.orderStore.setSelectedCRSEventCode(CRSEventCode)
-
     Taro.navigateTo({
       url: '/pages/orderInfo/orderInfo'
     })

@@ -21,16 +21,12 @@ class CameraX extends Component {
         this.cameraContext = createCameraContext();
         wx.getSystemInfo({
             success: (result) => {
-                console.log('getsysteminfo-result', result)
                 this.setState({
                     windowHeight: (result.windowHeight - 150) + 'px'
                 }, () => {
-
-                    console.log('this.cameraContext', this.cameraContext)
                 })
             },
             fail: (err) => {
-                console.log('CameraX-fail', err)
             },
             complete: () => { }
         });
@@ -58,7 +54,6 @@ class CameraX extends Component {
 
             },
             fail(err) {
-                console.log('takePhoto-fail-err', err)
             },
             complete() {
 
@@ -66,19 +61,6 @@ class CameraX extends Component {
         })
     }
     onPreviewImage = () => {
-        // wx.previewImage({
-        //     urls: this.state.picUrls,
-        //     success(result) {
-        //         console.log('previewimage-result', result)
-        //     },
-        //     fail(err) {
-        //         console.error(err)
-        //     },
-        //     complete() {
-
-        //     }
-        // })
-
         Taro.navigateTo({
             url: '/pages/utils/myPreviewImage'
         })

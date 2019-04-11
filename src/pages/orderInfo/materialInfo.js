@@ -1,5 +1,5 @@
 import Taro,{Component} from '@tarojs/taro'
-import { View, CoverView } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx';
 import { AtList, AtListItem } from 'taro-ui';
 
@@ -9,39 +9,23 @@ class MaterialInfo extends Component{
     constructor(props){
         super(props)
     }
-
-    componentDidMount(){
-    }
-
-    componentDidShow(){
-        
+    componentDidShow(){        
         const {orderStore} = this.props
         this.orderStore = orderStore
         this.CRSEventCode = orderStore.getSelectedCRSEventCode()
         this.state = {
-            suborders: this.orderStore.getSubItemsByCode(this.CRSEventCode),            
-            coverViewStyle: {
-                backgroundColor:'blue',
-                height: '100rpx', 
-                width:'750rpx',
-                dispay: 'none'
-            }
+            suborders: this.orderStore.getSubItemsByCode(this.CRSEventCode)
         }
     }
 
     onListItemClicked = (e,v) => {
-        let materialCode = v.currentTarget.dataset.code
-
+        let materialCode = v.currentTarget.dataset.code;
         const item = this.state.suborders.find(v=>v.MaterialCode === materialCode);
-
-
         this.orderStore.setSelectedMaterialItem(item)
-
         Taro.navigateTo({
             url: '/pages/orderInfo/materialItemInfo'
         })
     }
-
     render(){
         return <View>
             <AtList>

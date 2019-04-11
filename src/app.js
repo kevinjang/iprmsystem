@@ -1,8 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import Index from './pages/index'
-
-// import counterStore from './store/counter'
 import orderStore from './store/orderInfoStore'
 
 import './app.styl'
@@ -16,7 +14,6 @@ import {AtTabBar} from 'taro-ui'
 // }
 
 const store = {
-  // counterStore,
   orderStore
 }
 
@@ -27,6 +24,7 @@ class App extends Component {
       'pages/index/index',
       'pages/logs/logs',
       'pages/notification/notification',
+      'pages/uploadProof/uploadProof',
       'pages/orderInfo/orderInfo',
       'pages/orderInfo/materialItemInfo',
       'pages/utils/camera',

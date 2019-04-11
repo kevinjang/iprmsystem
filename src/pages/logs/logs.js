@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtAvatar, AtButton, AtModal } from 'taro-ui';
+import { View } from '@tarojs/components'
+import { AtAvatar, AtButton } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
 
 class Logs extends Component {
@@ -22,20 +22,17 @@ class Logs extends Component {
                 lang: 'zh_CN',
                 timeout: 10000,
                 success: (result) => {
-                    console.log('getUserInfo-result',result)
                     this.setState({
                         userName: result.userInfo.nickName,
                         userImgUrl: result.userInfo.avatarUrl
                     })
                 },
                 fail: (err) => {
-                    console.log('getuserinfo-error', err)
                 },
                 complete: () => { }
             });
         }
         catch (err) {
-            console.log('err', err)
         }
     }
 

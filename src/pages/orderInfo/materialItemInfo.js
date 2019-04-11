@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Camera, Text } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 
 import orderStore from '../../store/orderInfoStore'
 import { AtList, AtListItem, AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui';
@@ -50,7 +50,6 @@ class MaterialItemInfo extends Component {
                 <AtListItem title='二维码' note={this.materialItem.QRCode} />
                 <AtListItem title='其它可追溯码' note={this.materialItem.OtherCode} />
             </AtList>
-
             <View >
                 <AtButton type='secondary' onClick={this.onPhotographClicked}>拍照</AtButton>
             </View>
@@ -65,7 +64,6 @@ class MaterialItemInfo extends Component {
                     <Text>从手机相册选择</Text>
                 </AtActionSheetItem>
             </AtActionSheet>
-
         </View>
     }
 }
