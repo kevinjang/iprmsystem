@@ -105,9 +105,10 @@ class OrderInfo extends Component {
             onlyFromCamera: false,
             scanType: ['qrCode','barCode','datamatrix','pdf417'],
             success: (result)=>{
-                Taro.showToast({
-                    title: result.result
-                })
+                // Taro.showToast({
+                //     title: result.result
+                // })
+                console.log(result)
             },
             fail: ()=>{},
             complete: ()=>{}
