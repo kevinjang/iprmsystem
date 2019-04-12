@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components';
 import { inject, observer } from '@tarojs/mobx'
-import { AtList, AtListItem, AtAccordion,  AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtCard } from 'taro-ui';
+import { AtList, AtListItem, AtAccordion, AtButton, AtActionSheet, AtActionSheetItem, AtFloatLayout, AtCard } from 'taro-ui';
 import 'taro-ui/dist/weapp/css/index.css'
-import './orderInfo.styl'
+// import './orderInfo.styl'
 
 import MaterialInfo from './materialInfo'
 import { Provider } from '@tarojs/mobx/dist';
@@ -21,12 +21,14 @@ class OrderInfo extends Component {
         this.state = {
             basicInforOpen: true,
             auditOpinionOpen: false,
+            scanCodeOpen: false,
             loading: true,
             actionSheetIsOpened: false,
             floatLayoutOpened: false,
             listOrGrid: true,
             auditOpinions: [],
-            columnsInfo: []
+            columnsInfo: [],
+            scanCodes: []
         }
     }
     componentWillMount() {
@@ -97,28 +99,27 @@ class OrderInfo extends Component {
         this.setState({ actionSheetIsOpened: false })
     }
 
-    onScanCode = () =>{
-        // Taro.navigateTo({
-        //     url:'/pages/uploadProof/uploadProof'
-        // })
+    onScanCode = () => {
         wx.scanCode({
             onlyFromCamera: false,
-            scanType: ['qrCode','barCode','datamatrix','pdf417'],
-            success: (result)=>{
-                // Taro.showToast({
-                //     title: result.result
-                // })
-                console.log(result)
+            scanType: ['qrCode', 'barCode', 'datamatrix', 'pdf417'],
+            success: (result) => {
+                var codes = this.state.scanCodes;
+                if (codes.findIndex(p => p === result.result) === -1) {
+                    this.setState({
+                        scanCodes: [...codes, result.result]
+                    })
+                }
             },
-            fail: ()=>{},
-            complete: ()=>{}
+            fail: () => { },
+            complete: () => { }
         });
     }
 
     render() {
         return <View>
             <View>
-                <View style={{ float: 'right',  marginTop: '10px' }}>
+                <View style={{ float: 'right', marginTop: '10px' }}>
                     <AtButton type='secondary' size='small' style={"margin-right: 25px"} onClick={this.materialButtonClicked}>物料</AtButton>
                     <AtButton type='primary' size='small' style={"margin-right: 35px"} onClick={this.processButtonClicked}>处理</AtButton>
                 </View>
@@ -155,6 +156,17 @@ class OrderInfo extends Component {
                         </View>
                     })}
 
+                </AtAccordion>
+                <AtAccordion
+                    title='扫码信息'
+                    open={this.state.scanCodeOpen}
+                    icon={{ value: 'message', color: 'yellow', size: 15 }}
+                    onClick={() => { this.setState({ scanCodeOpen: !this.state.scanCodeOpen }) }}>
+                    {this.state.scanCodes.map((item, index) => {
+                        return <View style={{ marginTop: '10px' }}>
+                            {index}:  {item}
+                        </View>
+                    })}
                 </AtAccordion>
                 <AtActionSheet
                     isOpened={this.state.actionSheetIsOpened}

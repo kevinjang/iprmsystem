@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { Image, View, CoverView, Swiper, SwiperItem, CoverImage } from '@tarojs/components'
+import { Image, View, CoverView, Swiper, SwiperItem } from '@tarojs/components'
 import cameraStore from '../../store/cameraStore'
 import './myPreviewImage.styl'
 
