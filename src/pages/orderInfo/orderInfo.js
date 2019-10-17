@@ -47,6 +47,19 @@ class OrderInfo extends Component {
             wx.hideLoading();
         }, 500)
 
+        const db = wx.cloud.database();
+        let columns = []
+        let that = this
+        db.collection('CRSEventTitleColumnsInfo').where({
+            "name": 'CRSEventTitleColumnsInfo'
+        }).get({
+            success: (result) => {
+                that.setState({
+                    columnsInfo: result.data
+                })
+            }
+        })
+
         this.setState({
             auditOpinions: [
                 {
@@ -59,8 +72,9 @@ class OrderInfo extends Component {
                     title: '第三审批人', content: '同意'
                 }
             ],
-            columnsInfo: CRS.CRSEventTitleColumnsInfo
+            columnsInfo: columns
         })
+        //CRS.CRSEventTitleColumnsInfo
 
         wx.setNavigationBarTitle({
             title: this.item.CRSEventCode
@@ -100,6 +114,9 @@ class OrderInfo extends Component {
     }
 
     onScanCode = () => {
+        this.setState({
+            actionSheetIsOpened: false
+        })
         wx.scanCode({
             onlyFromCamera: false,
             scanType: ['qrCode', 'barCode', 'datamatrix', 'pdf417'],

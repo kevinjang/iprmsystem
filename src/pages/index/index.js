@@ -1,9 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { CRS } from '../../models/CRSEventData'
 import { AtAccordion, AtList, AtListItem } from 'taro-ui'
 import { View } from '@tarojs/components'
 import 'taro-ui/dist/weapp/css/index.css'
 import { inject, observer } from '@tarojs/mobx'
+
+// const cloud = require('wx-server-sdk')
 
 @inject('orderStore')
 @observer
@@ -16,26 +17,10 @@ export default class Index extends Component {
       processingAccordinItemOpen: false,
       processingItems: []
     }
+    wx.cloud.init();
+    this.db = wx.cloud.database();
 
     this.orderStore = orderStore
-    let orders = []
-    let subOrders = []
-
-    orders = CRS.CRSEventTitle;
-    subOrders = CRS.CRSEventDetail;
-
-    for (let index in orders) {
-      const item = orders[index]
-      this.orderStore.addTitleItem(item)
-    }
-
-    for (let index in subOrders) {
-      const item = subOrders[index]
-      this.orderStore.addDetailItem(item)
-    }
-    this.setState({
-      processingItems: Array.from(this.orderStore.getItems())
-    })
   }
 
   accordinIconSize = 15
@@ -45,6 +30,33 @@ export default class Index extends Component {
     this.setState({
       processingAccordinItemOpen: !this.state.processingAccordinItemOpen
     })
+    let that = this;
+    if (!this.state.processingAccordinItemOpen)
+      this.db.collection('CRSEventTitle')
+        .get().then(result => {
+          // console.log('title', res);
+          let orders = []
+          orders = result.data;
+          let subOrders = []
+
+          subOrders = [];
+
+          for (let index in orders) {
+            const item = orders[index]
+            that.orderStore.addTitleItem(item)
+          }
+
+          for (let index in subOrders) {
+            const item = subOrders[index]
+            that.orderStore.addDetailItem(item)
+          }
+          that.setState({
+            processingItems: Array.from(that.orderStore.getItems())
+          })
+        })
+  }
+
+  componentDidMount() {
   }
 
   loadClickedItem = (e, v) => {
@@ -66,7 +78,7 @@ export default class Index extends Component {
             {this.state.processingItems.map((item, index) => {
               return <AtListItem
                 title={(index + 1) + '.投诉单号：' + item.CRSEventCode}
-                data-code={ item.CRSEventCode }
+                data-code={item.CRSEventCode}
                 arrow="right"
                 extraText="详细消息"
                 onClick={this.loadClickedItem}>
