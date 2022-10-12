@@ -27,7 +27,7 @@
     "@tarojs/mobx-rn": "1.2.15",
     "@tarojs/redux": "^1.2.20",
     "@tarojs/redux-h5": "^1.2.20",
-    "@tarojs/rn-runner": "1.2.15",
+    "@tarojs/rn-runner": "3.5.6",
     "@tarojs/router": "1.2.15",
     "@tarojs/taro": "1.2.15",
     "@tarojs/taro-alipay": "1.2.15",
